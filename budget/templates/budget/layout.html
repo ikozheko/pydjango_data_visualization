@@ -1,0 +1,77 @@
+{% load static %}
+<html lang="ru">
+    <head>
+        <title>Информация об исполнении областного бюджета</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'budget/main.css' %}?v=4">
+        <script>
+            var is_authenticated = {{ user.is_authenticated|yesno:"true,false" }};
+        </script>
+    </head>
+    <body>
+        <div class="wrap">
+            <nav class="navbar navbar-default header">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="{% url 'budget:index' %}">Информация об исполнении областного бюджета</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse" id="profileMenu">
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if user.is_authenticated %}
+                                <li><a href="{% url 'budget:logout' %}">Выход ({{ user.username }})</a></li>
+                            {% else %}
+                                <li><a href="#" data-toggle="modal" data-target="#auth">Войти</a></li>
+                                <li><a href="{% url 'django_registration_register' %}">Зарегистрироваться</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <div class="content container">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <footer class="footer">
+            &copy; Кожеко И.М., 2018 / Powered by Django
+        </footer>
+
+        <div id="auth" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <form class="modal-content" method="post" action="{% url 'budget:login' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Вход</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Имя пользователя</label>
+                            <input name="username" type="text" class="form-control" placeholder="Введите имя пользователя">
+                        </div>
+                        <div class="form-group">
+                            <label>Пароль</label>
+                            <input name="password" type="password" class="form-control" placeholder="Введите пароль">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                    </div>
+                </form>
+          </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+        <script src="{% static 'budget/main.js' %}?v=7"></script>
+        <script src="{% static 'budget/echarts.min.js' %}"></script>
+    </body>
+</html>

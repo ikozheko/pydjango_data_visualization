@@ -1,0 +1,112 @@
+{% extends './layout.html' %}
+{% block content %}
+<div class="alert alert-warning js-charts-warning" role="alert" style="display:none">Необходимо выбрать КБК для отображения графиков</div>
+
+<div class="row js-charts">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Первый чарт</h3>
+            </div>
+            <div class="panel-body">
+                <div id="primary_chart" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Второй чарт</h3>
+            </div>
+            <div class="panel-body">
+                <div id="secondary_chart" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Табличные данные</h3>
+    </div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="budgetExecution">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-pencil-alt"></i></th>
+                        <th>Год</th>
+                        <th>КБК</th>
+                        <th>Наименование показателя</th>
+                        <th>Назначение</th>
+                        <th>Исполнение</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% if user.is_authenticated %}
+<div class="modal fade" tabindex="-1" role="dialog" id="editExecution">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Редактирование показателя</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Год</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static js-execution-year"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">КБК</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static js-execution-kbk"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Наименование показателя</label>
+                        <div class="col-md-9">
+                            <p class="form-control-static js-execution-indicator"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Назначение</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <input class="form-control text-right js-execution-purpose" type="text" name="execution_purpose" value="">
+                                <span class="input-group-addon">₽</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Исполнение</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <input class="form-control text-right js-execution-cash" type="text" name="execution_cash" value="">
+                                <span class="input-group-addon">₽</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {% csrf_token %}
+                <input class="js-execution-id" type="hidden" value="">
+                <button type="button" class="btn btn-primary js-save-execution">Сохранить</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
